@@ -1,5 +1,6 @@
 package boris.factura.controller;
 
+import boris.factura.model.Factura;
 import boris.factura.model.Producto;
 import boris.factura.service.ProductoService;
 import boris.factura.service.impl.ProductoServiceImplement;
@@ -25,7 +26,14 @@ public class ProductoController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Producto producto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productoServiceImplement.save(producto));
+
+        if(producto.getProducto().equals("") || producto.getProducto().equals(null)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El nombre del producto no puede estar vacio");
+        }else  if (producto.getProducto().length()>25){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El nombre del producto no puede ser mayor a 50 caracteres");
+        }else{
+            return ResponseEntity.status(HttpStatus.CREATED).body(productoServiceImplement.save(producto));
+        }
     }
 
     @GetMapping("/{id}")
@@ -67,6 +75,35 @@ public class ProductoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    /*
+    ("/{id}")
+    private ResponseEntity<Factura> asignarProductoFactura(@){
+
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    /*
+    private ResponseEntity<Factura> getEstudianteResponseEntity(@PathVariable int idProducto, @PathVariable int id) {
+        estudianteOptional = estudianteServiceImplement.findByID(idEstudiante);
+        if (estudianteOptional.isPresent()) {
+            cursoOptional = cursoServiceImplement.findByID(id);
+            estudianteOptional.get().setCurso(
+                    new Curso(cursoOptional.get().getId(),
+                            cursoOptional.get().getParalelo(),
+                            cursoOptional.get().getGrado(),
+                            cursoOptional.get().getSeccion())
+            );
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(estudianteServiceImplement.save(estudianteOptional.get()));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }*/
 
 
 }

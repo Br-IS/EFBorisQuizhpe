@@ -18,6 +18,8 @@ public class Factura  implements Serializable {
     @Column(name = "idFactura", nullable = false)
     private Integer idFactura;
 
+    private Date fecha;
+
     public Factura() {
     }
 
